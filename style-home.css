@@ -1,0 +1,297 @@
+/* =======================
+   RESET BÁSICO
+======================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =======================
+   HEADER
+======================= */
+header {
+  background-color: #000;
+  color: #fff;
+  padding: 20px 10px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo-container h1 {
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.logo-container p {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.logo {
+  width: 180px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.social a img {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  transition: transform 0.2s;
+}
+
+.social a img:hover {
+  transform: scale(1.1);
+}
+
+/* =======================
+   ANÚNCIO NEON
+======================= */
+.anuncio-neon {
+  background-color: #111;
+  color: #0ff;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+  margin: 20px auto;
+}
+
+/* =======================
+   GRID PRINCIPAL
+======================= */
+main {
+  flex: 1; /* faz o main ocupar todo espaço disponível */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* coluna esquerda maior */
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.right-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =======================
+   CARDS
+======================= */
+.card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  text-align: center;
+}
+
+.card-text h2 {
+  font-size: 1.5rem;
+}
+
+/* Tamanhos específicos - maior destaque no desktop */
+.card.big {
+  height: 450px; /* maior que antes */
+}
+
+.card.small {
+  height: 220px; /* maior que antes */
+}
+
+/* =======================
+   FOOTER
+======================= */
+footer {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+/* =======================
+   ANIMAÇÃO NEON
+======================= */
+@keyframes neon-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+    color: #0ff;
+  }
+  50% {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 50px #0ff;
+    color: #0ff;
+  }
+}
+
+.anuncio-neon {
+  animation: neon-glow 1.5s ease-in-out infinite;
+}
+
+/* =======================
+   ANÚNCIO NEON COM BORDA
+======================= */
+.anuncio-neon {
+  background-color: #111;
+  color: #0ff;
+  text-align: center;
+  padding: 15px 20px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 3px solid #0ff;
+  border-radius: 10px;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+  margin: 20px auto;
+  display: inline-block;
+  animation: neon-border 1.5s ease-in-out infinite, neon-text 1.5s ease-in-out infinite;
+}
+
+/* Animação da borda neon */
+@keyframes neon-border {
+  0%, 100% {
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  }
+  50% {
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 60px #0ff;
+  }
+}
+
+/* Animação do texto neon */
+@keyframes neon-text {
+  0%, 100% {
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+  }
+  50% {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+  }
+}
+
+
+/* =======================
+   RESPONSIVIDADE
+======================= */
+
+/* Tablets: grid vira uma coluna, cards pequenos lado a lado */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: 1fr; 
+  }
+
+  .right-cards {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .card.big {
+    height: 350px;
+  }
+
+  .card.small {
+    height: 180px;
+  }
+}
+
+/* Celulares: tudo em coluna única, cards menores */
+@media (max-width: 768px) {
+  .right-cards {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card.big {
+    height: 250px;
+  }
+
+  .card.small {
+    height: 120px;
+  }
+
+  .card-text h2 {
+    font-size: 1.2rem;
+  }
+
+  .anuncio-neon {
+    font-size: 1rem;
+  }
+
+  .logo-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .social a img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Celulares muito pequenos */
+@media (max-width: 480px) {
+  .card.big {
+    height: 200px;
+  }
+
+  .card.small {
+    height: 100px;
+  }
+
+  .card-text h2 {
+    font-size: 1rem;
+  }
+
+  .anuncio-neon {
+    font-size: 0.9rem;
+  }
+
+  .grid-container {
+    padding: 10px;
+  }
+}
