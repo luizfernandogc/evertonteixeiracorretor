@@ -74,7 +74,7 @@ header {
 }
 
 .btn-back:hover {
-  background: #003380;
+  background: #000000;
 }
 
 /* =======================
@@ -106,7 +106,7 @@ header {
 .card-content h2 {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  color: #004aad;
+  color: #0c44ff;
   cursor: pointer;
 }
 
@@ -241,7 +241,7 @@ header {
 }
 
 #infoModal h2 {
-  color: #004aad;
+  color: #000000;
   margin-bottom: 1rem;
 }
 
@@ -309,5 +309,72 @@ footer .social a img:hover {
   .btn-back {
     display: inline-block;
     margin-top: 0.5rem;
+  }
+}
+
+/* Botão de fechar sempre fixo e acessível */
+.modal .close {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem; /* tamanho do X */
+  background: rgba(0, 0, 0, 0.6); /* fundo para destacar */
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;  
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999; /* garante que fique sempre por cima */
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+  .modal .close {
+    top: 5px;
+    right: 5px;
+    font-size: 2.2rem;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* =======================
+   MODAL DE MÍDIA AJUSTADO
+======================= */
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 90%;   /* menor que a tela */
+  max-height: 80vh; /* controla a altura */
+  overflow-y: auto; /* ativa rolagem se necessário */
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content img,
+.modal-content video {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%;
+    max-height: 75vh;
+    padding: 8px;
+  }
+
+  .modal-content img,
+  .modal-content video {
+    max-height: 65vh;
   }
 }

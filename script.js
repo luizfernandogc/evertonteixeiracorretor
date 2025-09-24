@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCarousel();
     });
 
-    // Ajusta carrossel ao redimensionar tela
     window.addEventListener("resize", updateCarousel);
   });
 
@@ -58,11 +57,15 @@ document.addEventListener("DOMContentLoaded", () => {
       video.src = current;
       video.controls = true;
       video.autoplay = true;
+      video.style.maxWidth = "100%";
+      video.style.maxHeight = "70vh";
       modalContent.appendChild(video);
     } else {
       const img = document.createElement("img");
       img.src = current;
       img.alt = "Imagem do imóvel";
+      img.style.maxWidth = "100%";
+      img.style.maxHeight = "70vh";
       modalContent.appendChild(img);
     }
   }
@@ -85,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
   prevModal.addEventListener("click", () => navigateModal(-1));
   nextModal.addEventListener("click", () => navigateModal(1));
 
-  // Fechar ao clicar fora
   imageModal.addEventListener("click", (e) => {
     if (e.target === imageModal) imageModal.style.display = "none";
   });
@@ -126,24 +128,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-function showMedia() {
-  modalContent.innerHTML = "";
-  const current = mediaList[currentIndex];
-
-  if (current.endsWith(".mp4")) {
-    const video = document.createElement("video");
-    video.src = current;
-    video.controls = true;
-    video.autoplay = true;
-    video.style.maxWidth = "100%";
-    video.style.maxHeight = "80vh";
-    modalContent.appendChild(video);
-  } else {
-    const img = document.createElement("img");
-    img.src = current;
-    img.alt = "Imagem do imóvel";
-    img.style.maxWidth = "100%";
-    img.style.maxHeight = "80vh";
-    modalContent.appendChild(img);
-  }
-}
