@@ -1,6 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
   /* =======================
-      CARROSSEL
+      BANNER NEON ROTATIVO
+  ======================== */
+  const slides = document.querySelectorAll('#anuncio-rotativo .slide');
+  let bannerIndex = 0; // índice exclusivo do banner
+  const anuncioRotativo = document.getElementById('anuncio-rotativo');
+
+  anuncioRotativo.addEventListener('click', () => {
+    const link = slides[bannerIndex].getAttribute('data-link');
+    if(link) window.open(link, '_blank');
+  });
+
+  function mostrarSlide(i) {
+    slides.forEach((slide, idx) => {
+      slide.classList.remove('active');
+      if(idx === i) slide.classList.add('active');
+    });
+  }
+
+  mostrarSlide(bannerIndex);
+
+  setInterval(() => {
+    bannerIndex = (bannerIndex + 1) % slides.length;
+    mostrarSlide(bannerIndex);
+  }, 3000);
+
+  /* =======================
+      CARROSSEL HORIZONTAL
   ======================== */
   const carousels = document.querySelectorAll(".carousel");
 
@@ -9,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = carousel.querySelector(".carousel-btn.prev");
     const nextBtn = carousel.querySelector(".carousel-btn.next");
     const items = track.children;
-    let index = 0;
+    let index = 0; // índice do carrossel
 
     function updateCarousel() {
       const width = items[0].clientWidth;
