@@ -1,156 +1,136 @@
-document.addEventListener("DOMContentLoaded", () => {
-  /* =======================
-      BANNER NEON ROTATIVO
-  ======================== */
-  const slides = document.querySelectorAll('#anuncio-rotativo .slide');
-  let bannerIndex = 0; // índice exclusivo do banner
-  const anuncioRotativo = document.getElementById('anuncio-rotativo');
+// =======================
+// CAROUSEL DOS CARDS
+// =======================
+document.querySelectorAll('.card').forEach(card => {
+  const track = card.querySelector('.carousel-track');
+  const slides = Array.from(track.children);
+  const prevButton = card.querySelector('.carousel-btn.prev');
+  const nextButton = card.querySelector('.carousel-btn.next');
+  let index = 0;
 
-  anuncioRotativo.addEventListener('click', () => {
-    const link = slides[bannerIndex].getAttribute('data-link');
-    if(link) window.open(link, '_blank');
-  });
-
-  function mostrarSlide(i) {
-    slides.forEach((slide, idx) => {
-      slide.classList.remove('active');
-      if(idx === i) slide.classList.add('active');
-    });
+  function updateSlide() {
+    slides.forEach((slide, i) => slide.style.display = i === index ? 'block' : 'none');
   }
 
-  mostrarSlide(bannerIndex);
-
-  setInterval(() => {
-    bannerIndex = (bannerIndex + 1) % slides.length;
-    mostrarSlide(bannerIndex);
-  }, 3000);
-
-  /* =======================
-      CARROSSEL HORIZONTAL
-  ======================== */
-  const carousels = document.querySelectorAll(".carousel");
-
-  carousels.forEach((carousel) => {
-    const track = carousel.querySelector(".carousel-track");
-    const prevBtn = carousel.querySelector(".carousel-btn.prev");
-    const nextBtn = carousel.querySelector(".carousel-btn.next");
-    const items = track.children;
-    let index = 0; // índice do carrossel
-
-    function updateCarousel() {
-      const width = items[0].clientWidth;
-      track.style.transform = `translateX(-${index * width}px)`;
-    }
-
-    nextBtn.addEventListener("click", () => {
-      index = (index + 1) % items.length;
-      updateCarousel();
-    });
-
-    prevBtn.addEventListener("click", () => {
-      index = (index - 1 + items.length) % items.length;
-      updateCarousel();
-    });
-
-    window.addEventListener("resize", updateCarousel);
+  prevButton.addEventListener('click', () => {
+    index = (index - 1 + slides.length) % slides.length;
+    updateSlide();
   });
 
-  /* =======================
-      MODAL DE IMAGENS/VÍDEOS
-  ======================== */
-  const imageModal = document.getElementById("imageModal");
-  const modalContent = imageModal.querySelector(".modal-content");
-  const closeModal = imageModal.querySelector(".close");
-  const prevModal = imageModal.querySelector(".prev");
-  const nextModal = imageModal.querySelector(".next");
+  nextButton.addEventListener('click', () => {
+    index = (index + 1) % slides.length;
+    updateSlide();
+  });
 
-  let mediaList = [];
-  let currentIndex = 0;
+  updateSlide();
+});
 
-  function openMediaModal(images, startIndex = 0) {
-    mediaList = images.split(",");
-    currentIndex = startIndex;
-    showMedia();
-    imageModal.style.display = "flex";
+// =======================
+// MODAL DE IMAGEM/VIDEO
+// =======================
+const imageModal = document.getElementById('imageModal');
+const modalContent = imageModal.querySelector('.modal-content');
+const modalClose = imageModal.querySelector('.close');
+const modalPrev = imageModal.querySelector('.prev');
+const modalNext = imageModal.querySelector('.next');
+
+let currentMedia = [];
+let currentIndex = 0;
+
+function openModal(mediaArray, startIndex) {
+  currentMedia = mediaArray;
+  currentIndex = startIndex;
+  showModalContent();
+  imageModal.style.display = 'flex';
+  imageModal.setAttribute('aria-hidden', 'false');
+}
+
+function showModalContent() {
+  const item = currentMedia[currentIndex];
+  modalContent.innerHTML = '';
+  if (item.endsWith('.mp4')) {
+    const video = document.createElement('video');
+    video.src = item;
+    video.controls = true;
+    video.autoplay = true;
+    video.style.maxHeight = '80vh';
+    modalContent.appendChild(video);
+  } else {
+    const img = document.createElement('img');
+    img.src = item;
+    img.style.maxHeight = '80vh';
+    modalContent.appendChild(img);
   }
+}
 
-  function showMedia() {
-    modalContent.innerHTML = "";
-    const current = mediaList[currentIndex];
+modalClose.addEventListener('click', () => {
+  imageModal.style.display = 'none';
+  imageModal.setAttribute('aria-hidden', 'true');
+});
 
-    if (current.endsWith(".mp4")) {
-      const video = document.createElement("video");
-      video.src = current;
-      video.controls = true;
-      video.autoplay = true;
-      video.style.maxWidth = "100%";
-      video.style.maxHeight = "70vh";
-      modalContent.appendChild(video);
-    } else {
-      const img = document.createElement("img");
-      img.src = current;
-      img.alt = "Imagem do imóvel";
-      img.style.maxWidth = "100%";
-      img.style.maxHeight = "70vh";
-      modalContent.appendChild(img);
-    }
+modalPrev.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
+  showModalContent();
+});
+
+modalNext.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % currentMedia.length;
+  showModalContent();
+});
+
+// Abrir modal ao clicar na imagem ou vídeo
+document.querySelectorAll('.open-modal').forEach(el => {
+  el.addEventListener('click', () => {
+    const images = el.dataset.images.split(',');
+    const startIndex = images.indexOf(el.getAttribute('src')) >= 0 
+      ? images.indexOf(el.getAttribute('src')) 
+      : 0;
+    openModal(images, startIndex);
+  });
+});
+
+// Navegação por teclado no modal de imagens
+document.addEventListener('keydown', e => {
+  if (imageModal.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') modalPrev.click();
+    if (e.key === 'ArrowRight') modalNext.click();
+    if (e.key === 'Escape') modalClose.click();
   }
+});
 
-  function navigateModal(step) {
-    currentIndex = (currentIndex + step + mediaList.length) % mediaList.length;
-    showMedia();
-  }
+// Fechar modal clicando fora do conteúdo
+imageModal.addEventListener('click', e => {
+  if (e.target === imageModal) modalClose.click();
+});
 
-  document.querySelectorAll(".open-modal").forEach((item) => {
-    item.addEventListener("click", () => {
-      const images = item.dataset.images;
-      const siblings = [...item.parentElement.children];
-      const startIndex = siblings.indexOf(item);
-      openMediaModal(images, startIndex);
-    });
+// =======================
+// MODAL DE INFORMAÇÕES
+// =======================
+const infoModal = document.getElementById('infoModal');
+const infoClose = infoModal.querySelector('.close-info');
+const infoTitle = infoModal.querySelector('h2');
+const infoDetails = infoModal.querySelector('p');
+
+document.querySelectorAll('.info-trigger').forEach(el => {
+  el.addEventListener('click', () => {
+    infoTitle.textContent = el.dataset.title;
+    infoDetails.textContent = el.dataset.details;
+    infoModal.style.display = 'flex';
+    infoModal.setAttribute('aria-hidden', 'false');
   });
+});
 
-  closeModal.addEventListener("click", () => (imageModal.style.display = "none"));
-  prevModal.addEventListener("click", () => navigateModal(-1));
-  nextModal.addEventListener("click", () => navigateModal(1));
+infoClose.addEventListener('click', () => {
+  infoModal.style.display = 'none';
+  infoModal.setAttribute('aria-hidden', 'true');
+});
 
-  imageModal.addEventListener("click", (e) => {
-    if (e.target === imageModal) imageModal.style.display = "none";
-  });
+// Fechar modal de informações clicando fora do conteúdo
+infoModal.addEventListener('click', e => {
+  if (e.target === infoModal) infoClose.click();
+});
 
-  /* =======================
-      MODAL DE INFORMAÇÕES
-  ======================== */
-  const infoModal = document.getElementById("infoModal");
-  const infoTitle = infoModal.querySelector("h2");
-  const infoDetails = infoModal.querySelector("p");
-  const closeInfo = infoModal.querySelector(".close-info");
-
-  document.querySelectorAll(".info-trigger").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      infoTitle.textContent = trigger.dataset.title;
-      infoDetails.innerHTML = trigger.dataset.details.replace(/\n/g, "<br>");
-      infoModal.style.display = "flex";
-    });
-  });
-
-  closeInfo.addEventListener("click", () => (infoModal.style.display = "none"));
-
-  infoModal.addEventListener("click", (e) => {
-    if (e.target === infoModal) infoModal.style.display = "none";
-  });
-
-  /* =======================
-      ACESSIBILIDADE (ESC + SETAS)
-  ======================== */
-  document.addEventListener("keydown", (e) => {
-    if (imageModal.style.display === "flex") {
-      if (e.key === "Escape") imageModal.style.display = "none";
-      if (e.key === "ArrowLeft") navigateModal(-1);
-      if (e.key === "ArrowRight") navigateModal(1);
-    }
-    if (infoModal.style.display === "flex" && e.key === "Escape") {
-      infoModal.style.display = "none";
-    }
-  });
+// Navegação por teclado no modal de informações
+document.addEventListener('keydown', e => {
+  if (infoModal.style.display === 'flex' && e.key === 'Escape') infoClose.click();
 });
