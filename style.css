@@ -264,7 +264,7 @@ header {
 ======================= */
 footer {
   background: #000000;
-  color: white;
+  color: rgb(0, 0, 0);
   text-align: center;
   padding: 1rem;
   margin-top: 2rem;
@@ -377,4 +377,35 @@ footer .social a img:hover {
   .modal-content video {
     max-height: 65vh;
   }
+}
+
+.location {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 4px 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.location {
+  font-size: 1rem;
+  color: #2905f5; /* cor */
+  font-weight: 500;
+}
+ .location {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #7a7a7a;
+  margin: 6px 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.location-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor; /* mesma cor do texto */
+  flex-shrink: 0;
 }
