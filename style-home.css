@@ -38,12 +38,10 @@ header {
 
 .logo-container h1 {
   font-size: 1.8rem;
-  color: #fff;
 }
 
 .logo-container p {
   font-size: 1rem;
-  color: #fff;
 }
 
 .logo {
@@ -70,57 +68,64 @@ header {
   background-color: #111;
   color: #0ff;
   text-align: center;
-  padding: 10px;
+  padding: 15px 20px;
   font-weight: bold;
   font-size: 1.2rem;
-  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+  border: 3px solid #0ff;
+  border-radius: 10px;
   margin: 20px auto;
+  display: inline-block;
+  animation: neon-border 1.5s ease-in-out infinite, neon-text 1.5s ease-in-out infinite;
 }
 
 /* =======================
-   GRID PRINCIPAL
+   GRID PRINCIPAL – CORREÇÃO REAL
 ======================= */
 main {
-  flex: 1; /* faz o main ocupar todo espaço disponível */
+  flex: 1;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* coluna esquerda maior */
+  grid-template-columns: repeat(2, 1fr); /* 2x2 REAL */
   gap: 20px;
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 }
 
+/* REMOVE hierarquia visual */
 .right-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: contents; /* 🔥 CHAVE DA SOLUÇÃO */
 }
 
 /* =======================
-   CARDS
+   CARDS – TODOS IGUAIS
 ======================= */
 .card {
   position: relative;
-  display: block;
+  height: 280px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 15px;
   cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card.big,
+.card.small {
+  height: 280px;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
 }
 
 .card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.3s;
-}
-
-.card:hover img {
-  transform: scale(1.05);
 }
 
 .card-text {
@@ -129,22 +134,13 @@ main {
   left: 0;
   right: 0;
   padding: 15px;
-  background: rgba(0,0,0,0.5);
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
   color: #fff;
   text-align: center;
 }
 
 .card-text h2 {
-  font-size: 1.5rem;
-}
-
-/* Tamanhos específicos - maior destaque no desktop */
-.card.big {
-  height: 450px; /* maior que antes */
-}
-
-.card.small {
-  height: 220px; /* maior que antes */
+  font-size: 1.4rem;
 }
 
 /* =======================
@@ -158,142 +154,45 @@ footer {
 }
 
 /* =======================
-   ANIMAÇÃO NEON
+   ANIMAÇÕES
 ======================= */
-@keyframes neon-glow {
-  0%, 100% {
-    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-    color: #0ff;
-  }
-  50% {
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 50px #0ff;
-    color: #0ff;
-  }
-}
-
-.anuncio-neon {
-  animation: neon-glow 1.5s ease-in-out infinite;
-}
-
-/* =======================
-   ANÚNCIO NEON COM BORDA
-======================= */
-.anuncio-neon {
-  background-color: #111;
-  color: #0ff;
-  text-align: center;
-  padding: 15px 20px;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border: 3px solid #0ff;
-  border-radius: 10px;
-  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
-  margin: 20px auto;
-  display: inline-block;
-  animation: neon-border 1.5s ease-in-out infinite, neon-text 1.5s ease-in-out infinite;
-}
-
-/* Animação da borda neon */
 @keyframes neon-border {
   0%, 100% {
-    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+    box-shadow: 0 0 5px #0ff;
   }
   50% {
-    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 60px #0ff;
+    box-shadow: 0 0 20px #0ff;
   }
 }
 
-/* Animação do texto neon */
 @keyframes neon-text {
   0%, 100% {
-    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    text-shadow: 0 0 5px #0ff;
   }
   50% {
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    text-shadow: 0 0 15px #0ff;
   }
 }
-
 
 /* =======================
    RESPONSIVIDADE
 ======================= */
-
-/* Tablets: grid vira uma coluna, cards pequenos lado a lado */
-@media (max-width: 1024px) {
-  .grid-container {
-    grid-template-columns: 1fr; 
-  }
-
-  .right-cards {
-    flex-direction: row;
-    gap: 20px;
-  }
-
-  .card.big {
-    height: 350px;
-  }
-
-  .card.small {
-    height: 180px;
-  }
-}
-
-/* Celulares: tudo em coluna única, cards menores */
 @media (max-width: 768px) {
-  .right-cards {
-    flex-direction: column;
-    gap: 15px;
+  .grid-container {
+    grid-template-columns: 1fr;
   }
 
-  .card.big {
-    height: 250px;
-  }
-
-  .card.small {
-    height: 120px;
-  }
-
-  .card-text h2 {
-    font-size: 1.2rem;
-  }
-
-  .anuncio-neon {
-    font-size: 1rem;
-  }
-
-  .logo-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .social a img {
-    width: 25px;
-    height: 25px;
-  }
-}
-
-/* Celulares muito pequenos */
-@media (max-width: 480px) {
-  .card.big {
+  .card {
     height: 200px;
   }
+}
 
-  .card.small {
-    height: 100px;
+@media (max-width: 480px) {
+  .card {
+    height: 160px;
   }
 
   .card-text h2 {
     font-size: 1rem;
   }
-
-  .anuncio-neon {
-    font-size: 0.9rem;
-  }
-
-  .grid-container {
-    padding: 10px;
-  }
 }
-
-
